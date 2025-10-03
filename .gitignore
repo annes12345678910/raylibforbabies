@@ -3,3 +3,5 @@ libraylib.a
 raylib.h
 test
 .vscode/*
+.DS_Store
+distmac.zip
