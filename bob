@@ -7,12 +7,11 @@ LDFLAGS="-L. -lraylib -framework Cocoa -framework OpenGL -framework IOKit -frame
 
 # Source file and output executable
 SRC_FILE="./rfb.cpp"
-OUTPUT_EXEC="./librfb.a"
-g++ test.cpp -o test -L. -lrfb -std=c++20
-
+OUTPUT_EXEC="./dist/librfb.a"
+cp ./rfb.hpp ./dist/rfb.hpp
 echo "Compiling $SRC_FILE..."
-$CXX $CXXFLAGS -I./lib $SRC_FILE -o $OUTPUT_EXEC $LDFLAGS
-
+$CXX $CXXFLAGS $SRC_FILE -o $OUTPUT_EXEC $LDFLAGS
+g++ test.cpp -o test -L./dist -lrfb -std=c++20
 if [ $? -eq 0 ]; then
     echo "Compilation successful. Running $OUTPUT_EXEC..."
     ./test

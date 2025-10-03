@@ -1,5 +1,4 @@
-librfb.a.dSYM/*
+dist/*
 libraylib.a
-librfb.a
 raylib.h
 test
