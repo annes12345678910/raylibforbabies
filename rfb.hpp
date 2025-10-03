@@ -1,9 +1,15 @@
 #include <iostream>
+struct Music;
 namespace rfb
 {
+    void changemusic(std::string path, float volume = 1.0f);
+    void init();
+    extern Music music;
     namespace connect
     {
         void _df() {
+        }
+        void _dfi(int arg) {
         }
         extern std::function<void()> onupdate; // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
     } // namespace connect
@@ -29,7 +35,7 @@ namespace rfb
         std::string title = "MROW!!!";
         rfb::colors::Color fillcolor = rfb::colors::WHITE;
     } // namespace window
-    void mainloop();
+    void mainloop(bool resizeable = false, bool fullscreen = false, bool borderless = false, bool minimized = false);
     struct rect
     {
         int x;
@@ -39,5 +45,9 @@ namespace rfb
         colors::Color color;
         void add();
     };
+    namespace keys
+    {
+        const int SPACE = 32;
+    } // namespace keys
     inline std::vector<rfb::rect*> _rectd;
 } // namespace rfb
