@@ -5,7 +5,7 @@ namespace rfb
     {
         void _df() {
         }
-        std::function<void()> onupdate = _df; // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
+        extern std::function<void()> onupdate; // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
     } // namespace connect
     
     namespace colors

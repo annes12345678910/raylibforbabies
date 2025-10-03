@@ -2,3 +2,4 @@ dist/*
 libraylib.a
 raylib.h
 test
+.vscode/*

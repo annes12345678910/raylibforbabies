@@ -5,6 +5,11 @@
 
 namespace rfb
 {
+    namespace connect
+    {
+        std::function<void()> onupdate = _df;
+    } // namespace connect
+    
     ::Color colortocolor(rfb::colors::Color color) {
         return {color.r, color.g, color.b, color.a};
     }
