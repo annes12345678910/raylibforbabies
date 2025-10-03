@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Compiler and linker flags
+CXX="g++"
+CXXFLAGS="-std=c++20 -Wall -Wextra -g" # -g for debugging
+LDFLAGS="-L. -lraylib -framework Cocoa -framework OpenGL -framework IOKit -framework CoreAudio -framework CoreGraphics -shared"
+
+# Source file and output executable
+SRC_FILE="./rfb.cpp"
+OUTPUT_EXEC="./librfb.a"
+g++ test.cpp -o test -L. -lrfb -std=c++20
+
+echo "Compiling $SRC_FILE..."
+$CXX $CXXFLAGS -I./lib $SRC_FILE -o $OUTPUT_EXEC $LDFLAGS
+
+if [ $? -eq 0 ]; then
+    echo "Compilation successful. Running $OUTPUT_EXEC..."
+    ./test
+else
+    echo "Compilation failed."
+fi
