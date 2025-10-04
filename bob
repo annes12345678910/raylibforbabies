@@ -1,5 +1,5 @@
 #!/bin/bash
-
+set -e
 # Compiler and linker flags
 CXX="g++"
 CXXFLAGS="-std=c++20 -Wall -Wextra -g" # -g for debugging

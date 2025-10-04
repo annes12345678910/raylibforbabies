@@ -5,6 +5,9 @@ void update() {
     ract.x += 1;
 }
 int main() {
+    rfb::sprite ada;
+    ada.path = "sighting.png";
+    ada.add();
     rfb::init();
     rfb::changemusic("example.mp3");
     ract.add();
