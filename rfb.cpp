@@ -97,7 +97,7 @@ namespace rfb
             for (const auto& sp : rfb::_sprited)
             {
                 cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
-                DrawTexture(cache, sp->x,sp->y, rfb::colortocolor(sp->tint));
+                DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->tint));
             }
 
             EndDrawing();

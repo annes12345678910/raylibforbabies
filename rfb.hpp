@@ -33,6 +33,8 @@ namespace rfb
         MyTexture tex;
         int x = 0;
         int y = 0;
+        int rotation = 0;
+        int scale = 1;
         rfb::colors::Color tint = rfb::colors::WHITE;
         // Add the sprite to the drawing loop
         void add();
