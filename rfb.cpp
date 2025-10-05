@@ -5,7 +5,6 @@
 
 namespace rfb
 {
-    //std::vector<rfb::sprite*> _texvec;
     Texture2D cache;
     Texture2D c2;
     namespace connect
@@ -83,6 +82,7 @@ namespace rfb
             if (k != 0) {
                 std::cout << k << std::endl;
             }
+            // the music
             if (IsMusicValid(music))
             {
                 UpdateMusicStream(music);

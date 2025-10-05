@@ -26,6 +26,7 @@ namespace rfb
         extern std::function<void()> onupdate;  // the update sequence
         // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
     } // namespace connect
+    // A Sprite (Movable image)
     struct sprite
     {
         std::string path;
