@@ -73,7 +73,6 @@ namespace rfb
         for (const auto& sp : rfb::_sprited)
         {
             c2 = LoadTexture(sp->path.c_str());
-            //cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
             sp->tex = (MyTexture){c2.id, c2.width, c2.height, c2.mipmaps, c2.format};
         }
 
@@ -96,9 +95,9 @@ namespace rfb
                 DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
             }
             for (const auto& sp : rfb::_sprited)
-            {;
+            {
                 cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
-                DrawTexture(cache, 0,0, WHITE);
+                DrawTexture(cache, sp->x,sp->y, rfb::colortocolor(sp->tint));
             }
 
             EndDrawing();
