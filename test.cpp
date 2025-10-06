@@ -7,6 +7,8 @@ void update() {
     ada.x += -1;
 }
 int main() {
+    rfb::button but;
+    but.add();
     ada.path = "sighting.png";
     ada.add();
     rfb::init();

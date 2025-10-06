@@ -90,7 +90,7 @@ namespace rfb
     };
     struct button
     {
-        rect bg = {0,0,200,100};
+        rect bg = {0,0,200,100, rfb::colors::BLUE};
         std::string text = "Button";
         void add();
     };

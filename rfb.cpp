@@ -1,3 +1,4 @@
+#define RAYGUI_IMPLEMENTATION
 #include "rfb.hpp"
 #include "raylib.h"
 #include "raygui.h"
@@ -17,7 +18,7 @@ namespace rfb
         return {color.r, color.g, color.b, color.a};
     }
     ::Rectangle recttorec(rfb::rect ew) {
-        return (Rectangle){ew.x,ew.y,ew.width,ew.height};
+        return (Rectangle){static_cast<float>(ew.x),static_cast<float>(ew.y),static_cast<float>(ew.width),static_cast<float>(ew.height)};
     }
     void rect::add() {
         _rectd.push_back(this);
