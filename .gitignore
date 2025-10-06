@@ -5,3 +5,4 @@ test
 .vscode/*
 .DS_Store
 distmac.zip
+raygui.h
