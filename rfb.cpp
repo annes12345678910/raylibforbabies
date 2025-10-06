@@ -1,5 +1,6 @@
 #include "rfb.hpp"
 #include "raylib.h"
+#include "raygui.h"
 #include <iostream>
 
 
@@ -15,12 +16,18 @@ namespace rfb
     ::Color colortocolor(rfb::colors::Color color) {
         return {color.r, color.g, color.b, color.a};
     }
+    ::Rectangle recttorec(rfb::rect ew) {
+        return (Rectangle){ew.x,ew.y,ew.width,ew.height};
+    }
     void rect::add() {
         _rectd.push_back(this);
     }
 
     void sprite::add() {
         _sprited.push_back(this);
+    }
+    void button::add() {
+        _buttond.push_back(this);
     }
     void init() {
         if (!IsAudioDeviceReady()) {
@@ -99,7 +106,10 @@ namespace rfb
                 cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
                 DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->tint));
             }
-
+            for (const auto& but : rfb::_buttond)
+            {
+                GuiButton(recttorec(but->bg), but->text.c_str());
+            }
             EndDrawing();
         }
         CloseWindow();

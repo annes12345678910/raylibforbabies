@@ -88,9 +88,17 @@ namespace rfb
         // Add the sprite to the drawing loop
         void add();
     };
+    struct button
+    {
+        rect bg = {0,0,200,100};
+        std::string text = "Button";
+        void add();
+    };
+    
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.
     inline std::vector<rfb::rect*> _rectd;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of sprites.
     inline std::vector<rfb::sprite*> _sprited;
-
+    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of sprites.
+    inline std::vector<rfb::button*> _buttond;
 } // namespace rfb
