@@ -12,6 +12,7 @@ namespace rfb
     namespace connect
     {
         std::function<void()> onupdate = _df;
+        std::function<void(int)> onkeypress = _dfi;
     } // namespace connect
     // internal converter
     ::Color colortocolor(rfb::colors::Color color) {
@@ -88,7 +89,8 @@ namespace rfb
             rfb::connect::onupdate();
             k = GetKeyPressed();
             if (k != 0) {
-                std::cout << k << std::endl;
+                //std::cout << k << std::endl;
+                rfb::connect::onkeypress(k);
             }
             // the music
             if (IsMusicValid(music))
@@ -109,7 +111,11 @@ namespace rfb
             }
             for (const auto& but : rfb::_buttond)
             {
-                GuiButton(recttorec(but->bg), but->text.c_str());
+                if (GuiButton(recttorec(but->bg), but->text.c_str()))
+                {
+                    but->onclick();
+                }
+                
             }
             EndDrawing();
         }

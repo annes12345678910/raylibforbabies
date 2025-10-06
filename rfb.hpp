@@ -24,7 +24,7 @@ namespace rfb
 
         }
         extern std::function<void()> onupdate;  // the update sequence
-        // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
+        extern std::function<void(int)> onkeypress;
     } // namespace connect
     // color stuff
     namespace colors
@@ -92,6 +92,7 @@ namespace rfb
     {
         rect bg = {0,0,200,100, rfb::colors::BLUE};
         std::string text = "Button";
+        std::function<void()> onclick = rfb::connect::_df;
         void add();
     };
     
