@@ -4,7 +4,7 @@ rfb::rect ract = {0,0,100,100,rfb::colors::RED};
 void update() {
     //std::cout << "ract.x = " << ract.x << std::endl;
     ract.x += 1;
-    ada.x += 1;
+    ada.x += -1;
 }
 int main() {
     ada.path = "sighting.png";

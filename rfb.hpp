@@ -26,19 +26,6 @@ namespace rfb
         extern std::function<void()> onupdate;  // the update sequence
         // prevent OOF (specificaly std::__1::bad_function_call: std::exception)
     } // namespace connect
-    // A Sprite (Movable image)
-    struct sprite
-    {
-        std::string path;
-        MyTexture tex;
-        int x = 0;
-        int y = 0;
-        int rotation = 0;
-        int scale = 1;
-        rfb::colors::Color tint = rfb::colors::WHITE;
-        // Add the sprite to the drawing loop
-        void add();
-    };
     // color stuff
     namespace colors
     {
@@ -88,7 +75,19 @@ namespace rfb
     {
         const int SPACE = 32;
     } // namespace keys
-
+    // A Sprite (Movable image)
+    struct sprite
+    {
+        std::string path;
+        MyTexture tex;
+        float x = 0;
+        float y = 0;
+        int rotation = 0;
+        int scale = 1;
+        rfb::colors::Color tint = rfb::colors::WHITE;
+        // Add the sprite to the drawing loop
+        void add();
+    };
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.
     inline std::vector<rfb::rect*> _rectd;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of sprites.
