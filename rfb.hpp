@@ -95,6 +95,15 @@ namespace rfb
         std::function<void()> onclick = rfb::connect::_df;
         void add();
     };
+    struct text
+    {
+        std::string txt = "Text";
+        int size = 20;
+        int x = 0;
+        int y = 0;
+        rfb::colors::Color color = rfb::colors::BLACK;
+        void add();
+    };
     
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.
     inline std::vector<rfb::rect*> _rectd;
@@ -103,5 +112,5 @@ namespace rfb
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of buttons.
     inline std::vector<rfb::button*> _buttond;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
-    inline std::vector<rfb::button*> _textd;
+    inline std::vector<rfb::text*> _textd;
 } // namespace rfb

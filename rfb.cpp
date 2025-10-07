@@ -31,6 +31,9 @@ namespace rfb
     void button::add() {
         _buttond.push_back(this);
     }
+    void text::add() {
+        _textd.push_back(this);
+    }
     void init() {
         if (!IsAudioDeviceReady()) {
             InitAudioDevice();
@@ -115,6 +118,10 @@ namespace rfb
                 {
                     but->onclick();
                 }
+            }
+            for (const auto& txt : rfb::_textd)
+            {
+                DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
             }
             EndDrawing();
         }
