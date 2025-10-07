@@ -115,7 +115,6 @@ namespace rfb
                 {
                     but->onclick();
                 }
-                
             }
             EndDrawing();
         }

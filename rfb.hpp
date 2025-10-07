@@ -100,6 +100,8 @@ namespace rfb
     inline std::vector<rfb::rect*> _rectd;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of sprites.
     inline std::vector<rfb::sprite*> _sprited;
-    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of sprites.
+    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of buttons.
     inline std::vector<rfb::button*> _buttond;
+    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
+    inline std::vector<rfb::button*> _textd;
 } // namespace rfb
