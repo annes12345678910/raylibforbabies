@@ -65,6 +65,28 @@ namespace rfb
             std::cout << "Could not load music: " << path << std::endl;
         }
     }
+    void drawcamaffects() {
+        for (const auto& rect : rfb::_rectd)
+        {
+            DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
+        }
+        for (const auto& sp : rfb::_sprited)
+        {
+            cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
+            DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->tint));
+        }
+        for (const auto& but : rfb::_buttond)
+        {
+            if (GuiButton(recttorec(but->bg), but->text.c_str()))
+            {
+                but->onclick();
+            }
+        }
+        for (const auto& txt : rfb::_textd)
+        {
+            DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
+        }
+    }
     int k;
     void mainloop(bool resizeable, bool fullscreen, bool borderless, bool minimized) {
         if (resizeable)
@@ -114,26 +136,9 @@ namespace rfb
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
             BeginMode2D(cam);
-            for (const auto& rect : rfb::_rectd)
-            {
-                DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
-            }
-            for (const auto& sp : rfb::_sprited)
-            {
-                cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
-                DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->tint));
-            }
-            for (const auto& but : rfb::_buttond)
-            {
-                if (GuiButton(recttorec(but->bg), but->text.c_str()))
-                {
-                    but->onclick();
-                }
-            }
-            for (const auto& txt : rfb::_textd)
-            {
-                DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
-            }
+
+            drawcamaffects();
+            
             EndMode2D();
             EndDrawing();
         }
