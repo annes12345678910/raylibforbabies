@@ -13,6 +13,9 @@ namespace rfb
     void changemusic(std::string path, float volume = 1.0f);
     // initialize stuff, required
     void init();
+    void changecamerapos(float x, float y);
+    void changecamerazoom(float zoom);
+    void changecamerarot(float rotation);
     // the music (INTERNAL)
     extern Music music;
     namespace connect

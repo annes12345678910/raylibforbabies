@@ -12,6 +12,7 @@ void frick(int key) {
     std::cout << key << std::endl;
 }
 int main() {
+    rfb::changecamerarot(10);
     txt.y = 10;
     txt.x = 10;
     txt.add();

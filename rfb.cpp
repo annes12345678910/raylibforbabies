@@ -9,6 +9,16 @@ namespace rfb
 {
     Texture2D cache;
     Texture2D c2;
+    Camera2D cam = {(Vector2){0,0}, (Vector2){0,0},0,1};
+    void changecamerapos(float x, float y) {
+        cam.target = (Vector2){x,y};
+    }
+    void changecamerazoom(float zoom) {
+        cam.zoom = zoom;
+    }
+    void changecamerarot(float rotation) {
+        cam.rotation = rotation;
+    }
     namespace connect
     {
         std::function<void()> onupdate = _df;
@@ -103,6 +113,7 @@ namespace rfb
             
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
+            BeginMode2D(cam);
             for (const auto& rect : rfb::_rectd)
             {
                 DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
@@ -123,6 +134,7 @@ namespace rfb
             {
                 DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
             }
+            EndMode2D();
             EndDrawing();
         }
         CloseWindow();
