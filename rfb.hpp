@@ -72,7 +72,7 @@ namespace rfb
         colors::Color color;
         // Add the rect to the drawing loop
         void add();
-        bool camaffect;
+        bool camaffect = true;
     };
     // the key constants
     namespace keys
@@ -91,7 +91,7 @@ namespace rfb
         rfb::colors::Color tint = rfb::colors::WHITE;
         // Add the sprite to the drawing loop
         void add();
-        bool camaffect;
+        bool camaffect = true;
     };
     struct button
     {
@@ -99,7 +99,7 @@ namespace rfb
         std::string text = "Button";
         std::function<void()> onclick = rfb::connect::_df;
         void add();
-        bool camaffect;
+        bool camaffect = false;
     };
     struct text
     {
@@ -109,7 +109,7 @@ namespace rfb
         int y = 0;
         rfb::colors::Color color = rfb::colors::BLACK;
         void add();
-        bool camaffect;
+        bool camaffect = true;
     };
     
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.

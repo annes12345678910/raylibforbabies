@@ -10,6 +10,7 @@ namespace rfb
     Texture2D cache;
     Texture2D c2;
     Camera2D cam = {(Vector2){0,0}, (Vector2){0,0},0,1};
+    bool bocache;
     void changecamerapos(float x, float y) {
         cam.target = (Vector2){x,y};
     }
@@ -65,10 +66,14 @@ namespace rfb
             std::cout << "Could not load music: " << path << std::endl;
         }
     }
+    // poop
     void drawcamaffects() {
         for (const auto& rect : rfb::_rectd)
         {
-            DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
+            if (rect->camaffect)
+            {
+                DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
+            }
         }
         for (const auto& sp : rfb::_sprited)
         {
@@ -77,13 +82,19 @@ namespace rfb
         }
         for (const auto& but : rfb::_buttond)
         {
-            if (GuiButton(recttorec(but->bg), but->text.c_str()))
+            bocache = GuiButton(recttorec(but->bg), but->text.c_str());
+            if (bocache)
             {
                 but->onclick();
             }
         }
         for (const auto& txt : rfb::_textd)
         {
+            if (txt->camaffect)
+            {
+                /* code */
+            }
+            
             DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
         }
     }
@@ -138,7 +149,7 @@ namespace rfb
             BeginMode2D(cam);
 
             drawcamaffects();
-            
+
             EndMode2D();
             EndDrawing();
         }
