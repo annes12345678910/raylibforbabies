@@ -92,10 +92,8 @@ namespace rfb
         {
             if (txt->camaffect)
             {
-                /* code */
+                DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
             }
-            
-            DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
         }
     }
     int k;
