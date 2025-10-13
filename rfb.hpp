@@ -29,6 +29,10 @@ namespace rfb
         extern std::function<void()> onupdate;  // the update sequence
         extern std::function<void(int)> onkeypress;
     } // namespace connect
+    struct vector2 {
+        float x;
+        float y;
+    };
     // color stuff
     namespace colors
     {
@@ -78,6 +82,10 @@ namespace rfb
     namespace keys
     {
         const int SPACE = 32;
+        const int KEYUP = 265;
+        const int KEYDOWN = 264;
+        const int KEYRIGHT = 262;
+        const int KEYLEFT = 263;
     } // namespace keys
     // A Sprite (Movable image)
     struct sprite
@@ -111,6 +119,15 @@ namespace rfb
         void add();
         bool camaffect = true;
     };
+    struct line
+    {
+        vector2 p1 = {0,0};
+        vector2 p2 = {0,100};
+        float width = 4;
+        colors::Color color = colors::RED;
+        bool camaffect = true;
+    };
+    
     
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.
     inline std::vector<rfb::rect*> _rectd;
@@ -120,4 +137,6 @@ namespace rfb
     inline std::vector<rfb::button*> _buttond;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
     inline std::vector<rfb::text*> _textd;
+    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
+    inline std::vector<rfb::line*> _lined;
 } // namespace rfb

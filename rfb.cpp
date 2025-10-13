@@ -32,6 +32,9 @@ namespace rfb
     ::Rectangle recttorec(rfb::rect ew) {
         return (Rectangle){static_cast<float>(ew.x),static_cast<float>(ew.y),static_cast<float>(ew.width),static_cast<float>(ew.height)};
     }
+    ::Vector2 vector2tovec(vector2 thing) {
+        return {thing.x, thing.y};
+    }
     void rect::add() {
         _rectd.push_back(this);
     }
@@ -95,7 +98,16 @@ namespace rfb
                 DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
             }
         }
+        for (const auto& line : rfb::_lined)
+        {
+            if (line->camaffect)
+            {
+                DrawLineEx(vector2tovec(line->p1), vector2tovec(line->p2), line->width, colortocolor(line->color));
+            }
+        }
     }
+
+
     int k;
     void mainloop(bool resizeable, bool fullscreen, bool borderless, bool minimized) {
         if (resizeable)
@@ -141,6 +153,7 @@ namespace rfb
             {
                 UpdateMusicStream(music);
             }
+            
             
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
