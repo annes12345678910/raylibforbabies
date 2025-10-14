@@ -35,12 +35,29 @@ namespace rfb
     ::Vector2 vector2tovec(vector2 thing) {
         return {thing.x, thing.y};
     }
+    void GameObject::add() {
+        _objects.push_back(this);
+    }
+    void GameObject::draw() {}
+
+    GameObject::GameObject(float x, float y, rfb::colors::Color color)
+    {
+        this->x = x;
+        this->y = y;
+        this->color = color;
+    }
+    
+    GameObject::~GameObject()
+    {
+    }
     void rect::add() {
         _rectd.push_back(this);
     }
-
-    void sprite::add() {
-        _sprited.push_back(this);
+    void sprite::draw() {
+        std::cout << "Drawing sprite at (" << x << ", " << y << ")\n";
+        sprite* sp = this;
+        cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
+        DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->color));
     }
     void button::add() {
         _buttond.push_back(this);
@@ -78,10 +95,13 @@ namespace rfb
                 DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
             }
         }
-        for (const auto& sp : rfb::_sprited)
+        // skobido bum bum
+        for (const auto& obj : rfb::_objects)
         {
-            cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
-            DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->tint));
+            if (obj->camaffect)
+            {
+                obj->draw();
+            }
         }
         for (const auto& but : rfb::_buttond)
         {
@@ -134,10 +154,12 @@ namespace rfb
             PlayMusicStream(music);
         }
         
-        for (const auto& sp : rfb::_sprited)
+        for (const auto& obj : rfb::_objects)
         {
-            c2 = LoadTexture(sp->path.c_str());
-            sp->tex = (MyTexture){c2.id, c2.width, c2.height, c2.mipmaps, c2.format};
+            if (auto sp = dynamic_cast<rfb::sprite*>(obj)) {
+                c2 = LoadTexture(sp->path.c_str());
+                sp->tex = (MyTexture){c2.id, c2.width, c2.height, c2.mipmaps, c2.format};
+            }
         }
 
         while (!WindowShouldClose())

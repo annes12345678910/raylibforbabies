@@ -87,19 +87,30 @@ namespace rfb
         const int KEYRIGHT = 262;
         const int KEYLEFT = 263;
     } // namespace keys
+
+    class GameObject
+    {
+    private:
+        /* data */
+    public:
+        float x = 0;
+        float y = 0;
+        rfb::colors::Color color = rfb::colors::WHITE;
+        GameObject(float x=0, float y=0, rfb::colors::Color color=colors::WHITE);
+        virtual ~GameObject();
+        virtual void add();
+        virtual void draw();
+        bool camaffect = true;
+    };
+    
     // A Sprite (Movable image)
-    struct sprite
+    struct sprite : GameObject
     {
         std::string path;
         MyTexture tex;
-        float x = 0;
-        float y = 0;
         int rotation = 0;
         int scale = 1;
-        rfb::colors::Color tint = rfb::colors::WHITE;
-        // Add the sprite to the drawing loop
-        void add();
-        bool camaffect = true;
+        void draw() override;
     };
     struct button
     {
@@ -139,4 +150,6 @@ namespace rfb
     inline std::vector<rfb::text*> _textd;
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
     inline std::vector<rfb::line*> _lined;
+    // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of text.
+    inline std::vector<rfb::GameObject*> _objects;
 } // namespace rfb
