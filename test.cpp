@@ -1,6 +1,6 @@
 #include "rfb.hpp"
 rfb::sprite ada;
-rfb::rect ract = {0,0,100,100,rfb::colors::RED};
+rfb::rect ract;
 rfb::text txt;
 void update() {
     //std::cout << "ract.x = " << ract.x << std::endl;
@@ -12,17 +12,21 @@ void frick(int key) {
     std::cout << key << std::endl;
 }
 int main() {
-    rfb::changecamerarot(10);
+    rfb::init();
+    rfb::changecamera2drot(10);
     txt.y = 10;
     txt.x = 10;
-    txt.add();
-    rfb::button but;
-    but.add();
     ada.path = "sighting.png";
     ada.add();
-    rfb::init();
+    rfb::button but;
+    but.add();
+    
     rfb::changemusic("example.mp3");
     ract.add();
+    txt.add();
+    rfb::line la;
+    la.p1 = {100,10};
+    la.add();
     rfb::connect::onupdate = update;
     rfb::connect::onkeypress = frick;
     rfb::mainloop();

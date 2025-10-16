@@ -9,13 +9,14 @@ struct MyTexture {
 };
 namespace rfb
 {
+    bool drawgrids = true;
     // changes the music that constantly plays
     void changemusic(std::string path, float volume = 1.0f);
     // initialize stuff, required
     void init();
-    void changecamerapos(float x, float y);
-    void changecamerazoom(float zoom);
-    void changecamerarot(float rotation);
+    void changecamera2dpos(float x, float y);
+    void changecamera2dzoom(float zoom);
+    void changecamera2drot(float rotation);
     // the music (INTERNAL)
     extern Music music;
     namespace connect
@@ -63,21 +64,7 @@ namespace rfb
     // the most important function, run the game
     void mainloop(bool resizeable = false, bool fullscreen = false, bool borderless = false, bool minimized = false);
 
-    // A Rectangle
-    struct rect
-    {
-        // x position
-        int x;
-        // y position
-        int y;
 
-        int width;
-        int height;
-        colors::Color color;
-        // Add the rect to the drawing loop
-        void add();
-        bool camaffect = true;
-    };
     // the key constants
     namespace keys
     {
@@ -87,7 +74,7 @@ namespace rfb
         const int KEYRIGHT = 262;
         const int KEYLEFT = 263;
     } // namespace keys
-
+    // Object base class
     class GameObject
     {
     private:
@@ -101,8 +88,23 @@ namespace rfb
         virtual void add();
         virtual void draw();
         bool camaffect = true;
+        bool d3 = false;
+    };
+    struct D3Object : GameObject
+    {
+        bool camaffect = false;
+        float z = 0;
+        bool d3 = true;
     };
     
+    // A Rectangle
+    struct rect : GameObject
+    {
+        int width= 100;
+        int height= 100;
+        void draw() override;
+        rect(float x=0, float y=0, int w=100, int h=100, rfb::colors::Color c=rfb::colors::WHITE) : GameObject(x, y, c), width(w), height(h) {}
+    };
     // A Sprite (Movable image)
     struct sprite : GameObject
     {
@@ -112,32 +114,40 @@ namespace rfb
         int scale = 1;
         void draw() override;
     };
-    struct button
+
+    struct button : GameObject
     {
         rect bg = {0,0,200,100, rfb::colors::BLUE};
         std::string text = "Button";
         std::function<void()> onclick = rfb::connect::_df;
-        void add();
-        bool camaffect = false;
+        void draw() override;
     };
-    struct text
+    struct text : GameObject
     {
         std::string txt = "Text";
         int size = 20;
-        int x = 0;
-        int y = 0;
-        rfb::colors::Color color = rfb::colors::BLACK;
-        void add();
-        bool camaffect = true;
+        void draw() override;
     };
-    struct line
+    struct line : GameObject
     {
+        private: 
+        using GameObject::x;
+        using GameObject::y;
+
+        public:
         vector2 p1 = {0,0};
         vector2 p2 = {0,100};
         float width = 4;
-        colors::Color color = colors::RED;
-        bool camaffect = true;
+        void draw() override;
     };
+    struct cube : D3Object
+    {
+        float width = 1;
+        float height = 1;
+        float depth = 1;
+        void draw() override;
+    };
+    
     
     
     // INTERNAL, DO NOT INTERACT UNLESS YOU KNOW WHAT YOU ARE DOING!!! The drawing queue of rectangles.

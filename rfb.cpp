@@ -10,14 +10,15 @@ namespace rfb
     Texture2D cache;
     Texture2D c2;
     Camera2D cam = {(Vector2){0,0}, (Vector2){0,0},0,1};
+    Camera3D cam3d = {(Vector3){0,0,0}, (Vector3){0,0,0}, (Vector3){0,0,0}, 60, CAMERA_FREE};
     bool bocache;
-    void changecamerapos(float x, float y) {
+    void changecamera2dpos(float x, float y) {
         cam.target = (Vector2){x,y};
     }
-    void changecamerazoom(float zoom) {
+    void changecamera2dzoom(float zoom) {
         cam.zoom = zoom;
     }
-    void changecamerarot(float rotation) {
+    void changecamera2drot(float rotation) {
         cam.rotation = rotation;
     }
     namespace connect
@@ -25,7 +26,9 @@ namespace rfb
         std::function<void()> onupdate = _df;
         std::function<void(int)> onkeypress = _dfi;
     } // namespace connect
-    // internal converter
+
+    
+    // internal converters
     ::Color colortocolor(rfb::colors::Color color) {
         return {color.r, color.g, color.b, color.a};
     }
@@ -35,6 +38,8 @@ namespace rfb
     ::Vector2 vector2tovec(vector2 thing) {
         return {thing.x, thing.y};
     }
+
+
     void GameObject::add() {
         _objects.push_back(this);
     }
@@ -50,21 +55,36 @@ namespace rfb
     GameObject::~GameObject()
     {
     }
-    void rect::add() {
-        _rectd.push_back(this);
+
+    // some draw overrides i guess
+
+    void rect::draw() {
+        DrawRectangle(x, y, width, height, colortocolor(color));
     }
     void sprite::draw() {
-        std::cout << "Drawing sprite at (" << x << ", " << y << ")\n";
-        sprite* sp = this;
-        cache = (Texture2D){sp->tex.id, sp->tex.width, sp->tex.height, sp->tex.mipmaps, sp->tex.format};
-        DrawTextureEx(cache, (Vector2){sp->x, sp->y}, sp->rotation, sp->scale, rfb::colortocolor(sp->color));
+        //std::cout << "Drawing sprite at (" << x << ", " << y << ")\n";
+        cache = (Texture2D){tex.id, tex.width, tex.height, tex.mipmaps, tex.format};
+        DrawTextureEx(cache, (Vector2){x, y}, rotation, scale, rfb::colortocolor(color));
     }
-    void button::add() {
-        _buttond.push_back(this);
+    void button::draw() {
+        bocache = GuiButton(recttorec(bg), text.c_str());
+        if (bocache)
+        {
+            onclick();
+        }
     }
-    void text::add() {
-        _textd.push_back(this);
+    void text::draw() {
+        DrawText(txt.c_str(), x, y, size, colortocolor(color));
     }
+    void line::draw() {
+        DrawLineEx(vector2tovec(p1), vector2tovec(p2), width, colortocolor(color));
+    }
+    void cube::draw() {
+        DrawCube((Vector3){x, y, z}, width, height, depth, colortocolor(color));
+    }
+
+
+
     void init() {
         if (!IsAudioDeviceReady()) {
             InitAudioDevice();
@@ -87,42 +107,13 @@ namespace rfb
         }
     }
     // poop
-    void drawcamaffects() {
-        for (const auto& rect : rfb::_rectd)
-        {
-            if (rect->camaffect)
-            {
-                DrawRectangle(rect->x, rect->y, rect->width, rect->height, rfb::colortocolor(rect->color));
-            }
-        }
+    void drawobjs(bool iscam, bool d3) {
         // skobido bum bum
         for (const auto& obj : rfb::_objects)
         {
-            if (obj->camaffect)
+            if (obj->camaffect == iscam and obj->d3 == d3)
             {
                 obj->draw();
-            }
-        }
-        for (const auto& but : rfb::_buttond)
-        {
-            bocache = GuiButton(recttorec(but->bg), but->text.c_str());
-            if (bocache)
-            {
-                but->onclick();
-            }
-        }
-        for (const auto& txt : rfb::_textd)
-        {
-            if (txt->camaffect)
-            {
-                DrawText(txt->txt.c_str(), txt->x, txt->y, txt->size, rfb::colortocolor(txt->color));
-            }
-        }
-        for (const auto& line : rfb::_lined)
-        {
-            if (line->camaffect)
-            {
-                DrawLineEx(vector2tovec(line->p1), vector2tovec(line->p2), line->width, colortocolor(line->color));
             }
         }
     }
@@ -179,11 +170,22 @@ namespace rfb
             
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
+            BeginMode3D(cam3d);
+            if (rfb::drawgrids == true)
+            {
+                DrawGrid(100,1);
+            }
+            drawobjs(false, true);
+            
+            EndMode3D();
             BeginMode2D(cam);
 
-            drawcamaffects();
+            drawobjs(true, false);
 
             EndMode2D();
+
+            drawobjs(false, false);
+
             EndDrawing();
         }
         CloseWindow();
