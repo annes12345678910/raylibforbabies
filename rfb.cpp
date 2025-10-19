@@ -2,6 +2,7 @@
 #include "rfb.hpp"
 #include "raylib.h"
 #include "raygui.h"
+#include "raymath.h"
 #include <iostream>
 
 
@@ -10,7 +11,21 @@ namespace rfb
     Texture2D cache;
     Texture2D c2;
     Camera2D cam = {(Vector2){0,0}, (Vector2){0,0},0,1};
-    Camera3D cam3d = {(Vector3){0,0,0}, (Vector3){0,0,0}, (Vector3){0,0,0}, 60, CAMERA_FREE};
+    Camera3D cam3d = {
+        (Vector3){0.0f, 2.0f, 6.0f},   // position (a bit back and up)
+        (Vector3){0.0f, 0.0f, 0.0f},   // target (look toward origin)
+        (Vector3){0.0f, 1.0f, 0.0f},   // up direction
+        60.0f,                         // FOV in degrees
+        CAMERA_PERSPECTIVE             // i like cheese
+    };
+    int cammode = CAMERA_ORBITAL;
+    void generatefukingfunction(const char* funname, const char* args = "", const char* typ = "void") {
+        std::cout << TextFormat("%s rfb::%s(%s);", typ, funname, args);
+        std::cout << TextFormat("__attribute__((weak)) %s rfb::%s(%s) {}", typ, funname, args) << std::endl;
+    }
+    __attribute__((weak)) void rfb::update() {}
+    __attribute__((weak)) void rfb::onkeypress(int key) {}
+    
     bool bocache;
     void changecamera2dpos(float x, float y) {
         cam.target = (Vector2){x,y};
@@ -20,6 +35,7 @@ namespace rfb
     }
     void changecamera2drot(float rotation) {
         cam.rotation = rotation;
+        
     }
     namespace connect
     {
@@ -27,7 +43,7 @@ namespace rfb
         std::function<void(int)> onkeypress = _dfi;
     } // namespace connect
 
-    
+
     // internal converters
     ::Color colortocolor(rfb::colors::Color color) {
         return {color.r, color.g, color.b, color.a};
@@ -66,6 +82,26 @@ namespace rfb
         cache = (Texture2D){tex.id, tex.width, tex.height, tex.mipmaps, tex.format};
         DrawTextureEx(cache, (Vector2){x, y}, rotation, scale, rfb::colortocolor(color));
     }
+    void circle::draw() {
+        DrawCircle(x,y,radius,colortocolor(color));
+    }
+    void slider::draw() {
+        GuiSlider(recttorec(bounds), lefttext.c_str(), righttext.c_str(), &value, minvalue, maxvalue);
+    }
+    void checkbox::draw() {
+        GuiCheckBox(recttorec(bounds), text.c_str(), &checked);
+    }
+    void colorpicker::draw() {
+        if (hsv == true)
+        {
+            
+        }
+        else
+        {
+
+        }
+    }
+
     void button::draw() {
         bocache = GuiButton(recttorec(bg), text.c_str());
         if (bocache)
@@ -82,6 +118,7 @@ namespace rfb
     void cube::draw() {
         DrawCube((Vector3){x, y, z}, width, height, depth, colortocolor(color));
     }
+    
 
 
 
@@ -147,6 +184,7 @@ namespace rfb
         
         for (const auto& obj : rfb::_objects)
         {
+            // load the texture
             if (auto sp = dynamic_cast<rfb::sprite*>(obj)) {
                 c2 = LoadTexture(sp->path.c_str());
                 sp->tex = (MyTexture){c2.id, c2.width, c2.height, c2.mipmaps, c2.format};
@@ -156,6 +194,7 @@ namespace rfb
         while (!WindowShouldClose())
         {
             rfb::connect::onupdate();
+            rfb::update();
             k = GetKeyPressed();
             if (k != 0) {
                 //std::cout << k << std::endl;
@@ -166,16 +205,20 @@ namespace rfb
             {
                 UpdateMusicStream(music);
             }
-            
+            UpdateCamera(&cam3d, cammode);
             
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
             BeginMode3D(cam3d);
-            if (rfb::drawgrids == true)
+
+            if (is3d)
             {
-                DrawGrid(100,1);
+                if (rfb::drawgrids == true)
+                {
+                    DrawGrid(100,1);
+                }
+                drawobjs(false, true);
             }
-            drawobjs(false, true);
             
             EndMode3D();
             BeginMode2D(cam);
@@ -185,7 +228,7 @@ namespace rfb
             EndMode2D();
 
             drawobjs(false, false);
-
+            
             EndDrawing();
         }
         CloseWindow();

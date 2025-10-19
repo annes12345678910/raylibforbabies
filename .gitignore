@@ -6,3 +6,5 @@ test
 .DS_Store
 distmac.zip
 raygui.h
+rfb.s
+raymath.h

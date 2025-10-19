@@ -2,7 +2,7 @@
 set -e
 # Compiler and linker flags
 CXX="g++"
-CXXFLAGS="-std=c++20 -Wall -Wextra -g" # -g for debugging
+CXXFLAGS="-std=c++20 -Wall -Wextra -g -Wmissing-field-initializers" # -g for debugging
 LDFLAGS="-L. -lraylib -framework Cocoa -framework OpenGL -framework IOKit -framework CoreAudio -framework CoreGraphics -shared -Wunused-parameter"
 
 # Source file and output executable
@@ -10,6 +10,7 @@ SRC_FILE="./rfb.cpp"
 OUTPUT_EXEC="./dist/librfb.a"
 cp ./rfb.hpp ./dist/rfb.hpp
 echo "Compiling $SRC_FILE..."
+g++ -S rfb.cpp -o rfb.s # im bored
 $CXX $CXXFLAGS $SRC_FILE -o $OUTPUT_EXEC $LDFLAGS
 g++ test.cpp -o test -L./dist -lrfb -std=c++20 -Wunused-parameter
 if [ $? -eq 0 ]; then

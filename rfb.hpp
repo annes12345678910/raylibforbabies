@@ -1,5 +1,6 @@
 #include <iostream>
 struct Music;
+
 struct MyTexture {
     unsigned int id;        // OpenGL texture id
     int width;              // Texture base width
@@ -17,6 +18,9 @@ namespace rfb
     void changecamera2dpos(float x, float y);
     void changecamera2dzoom(float zoom);
     void changecamera2drot(float rotation);
+    void update(); // can be overridden by user
+    void onkeypress(int key);
+    bool is3d = false;
     // the music (INTERNAL)
     extern Music music;
     namespace connect
@@ -90,6 +94,7 @@ namespace rfb
         bool camaffect = true;
         bool d3 = false;
     };
+    // 3d object base class
     struct D3Object : GameObject
     {
         bool camaffect = false;
@@ -114,7 +119,7 @@ namespace rfb
         int scale = 1;
         void draw() override;
     };
-
+    // a button you can click
     struct button : GameObject
     {
         rect bg = {0,0,200,100, rfb::colors::BLUE};
@@ -122,12 +127,14 @@ namespace rfb
         std::function<void()> onclick = rfb::connect::_df;
         void draw() override;
     };
+    // some text
     struct text : GameObject
     {
         std::string txt = "Text";
         int size = 20;
         void draw() override;
     };
+    // a line streching from p1 to p2
     struct line : GameObject
     {
         private: 
@@ -140,6 +147,38 @@ namespace rfb
         float width = 4;
         void draw() override;
     };
+    // a 2d circle
+    struct circle : GameObject {
+        float radius=100;
+        void draw() override;
+    };
+    // a slider 
+    struct slider : GameObject {
+        rect bounds;
+        // int GuiSlider(Rectangle bounds, const char *textLeft, const char *textRight, float *value, float minValue, float maxValue)
+        float minvalue = 0;
+        float maxvalue = 100;
+        float value = 50;
+        std::string lefttext = std::to_string(minvalue);
+        std::string righttext = std::to_string(maxvalue);
+        void draw() override;
+    };
+    struct checkbox : GameObject {
+        // int GuiCheckBox(Rectangle bounds, const char *text, bool *checked)
+        rect bounds;
+        std::string text = "Checkbox";
+        bool checked = false;
+        void draw() override;
+    };
+    // need to fix this freaking thing, cant ask chatgpt because im on a plane.
+    struct colorpicker : GameObject {
+        // int GuiColorPicker(Rectangle bounds, const char *text, Color *color)
+        rect bounds;
+        std::string text = "Color Picker";
+        bool hsv = false;
+        void draw() override;
+    };
+    // a 3d cube
     struct cube : D3Object
     {
         float width = 1;
