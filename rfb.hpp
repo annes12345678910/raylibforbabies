@@ -10,7 +10,7 @@ struct MyTexture {
 };
 namespace rfb
 {
-    bool drawgrids = true;
+    extern bool drawgrids;
     // changes the music that constantly plays
     void changemusic(std::string path, float volume = 1.0f);
     // initialize stuff, required
@@ -20,7 +20,7 @@ namespace rfb
     void changecamera2drot(float rotation);
     void update(); // can be overridden by user
     void onkeypress(int key);
-    bool is3d = false;
+    extern bool is3d;
     // the music (INTERNAL)
     extern Music music;
     namespace connect
@@ -59,10 +59,10 @@ namespace rfb
     {
         int width = 800;
         int height = 600;
-        std::string title = "MROW!!!";
+        extern std::string title;
 
         // The background color
-        rfb::colors::Color fillcolor = rfb::colors::WHITE;
+        extern rfb::colors::Color fillcolor;
 
     } // namespace window
     // the most important function, run the game

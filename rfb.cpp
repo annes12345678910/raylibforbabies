@@ -8,6 +8,11 @@
 
 namespace rfb
 {
+
+    bool drawgrids = true;  // single definition
+    bool is3d = false;      // single definition
+    std::string window::title = "MROW!!!";
+    rfb::colors::Color window::fillcolor = rfb::colors::WHITE;
     Texture2D cache;
     Texture2D c2;
     Camera2D cam = {(Vector2){0,0}, (Vector2){0,0},0,1};
@@ -16,7 +21,7 @@ namespace rfb
         (Vector3){0.0f, 0.0f, 0.0f},   // target (look toward origin)
         (Vector3){0.0f, 1.0f, 0.0f},   // up direction
         60.0f,                         // FOV in degrees
-        CAMERA_PERSPECTIVE             // i like cheese
+        CAMERA_PERSPECTIVE           // i like cheese
     };
     int cammode = CAMERA_ORBITAL;
     void generatefukingfunction(const char* funname, const char* args = "", const char* typ = "void") {
@@ -217,7 +222,12 @@ namespace rfb
                 {
                     DrawGrid(100,1);
                 }
+                DrawCube({0,0,0}, 1,1,1,RED);
                 drawobjs(false, true);
+                //std::cout << "Cam pos: " << cam3d.position.x << ", "
+                //    << cam3d.position.y << ", "
+                //    << cam3d.position.z << std::endl;
+
             }
             
             EndMode3D();
