@@ -11,8 +11,15 @@ struct MyTexture {
     int mipmaps;            // Mipmap levels, 1 by default
     int format;             // Data format (PixelFormat type)
 };
+
 namespace rfb
 {
+    struct sound {
+        void* _sound; // opaque pointer
+        void play();
+    };
+
+    sound load_sound(std::string path);
     extern bool drawgrids;
     extern bool mouselocked;
     // changes the music that constantly plays

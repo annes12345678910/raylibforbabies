@@ -8,7 +8,15 @@
 
 namespace rfb
 {
+    sound load_sound(std::string path) {
+        sound s;
+        s._sound = new Sound(LoadSound(path.c_str()));
+        return s;
+    }
 
+    void sound::play() {
+        PlaySound(*reinterpret_cast<Sound*>(_sound));
+    }
     bool drawgrids = true;  // single definition
     bool is3d = false;      // single definition
     bool mouselocked = false;
