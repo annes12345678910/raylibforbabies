@@ -1,0 +1,26 @@
+#!/bin/bash
+set -e
+
+# WARNING: this compile script is biased towards mac.
+
+
+# Mac
+echo MAC
+mkdir -p dist && cd dist
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../mac.cmake -DCMAKE_INSTALL_PREFIX=../lib/libraylib.a
+make
+cd ..
+
+# Linux
+echo LINUX
+mkdir -p linuxdist && cd linuxdist
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../linux.cmake -DCMAKE_INSTALL_PREFIX=../lib/librayliblinux.a
+make 
+cd ..
+
+# Windows
+echo WIN
+mkdir -p windist && cd windist
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../win.cmake -DCMAKE_INSTALL_PREFIX=../lib/libraylibwin.a
+make 
+cd ..

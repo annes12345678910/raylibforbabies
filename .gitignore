@@ -8,3 +8,7 @@ distmac.zip
 raygui.h
 rfb.s
 raymath.h
+build/*
+windist/*
+linuxdist/*
+lib/*

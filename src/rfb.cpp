@@ -24,12 +24,14 @@ namespace rfb
         CAMERA_PERSPECTIVE           // i like cheese
     };
     int cammode = CAMERA_ORBITAL;
+    /*
     void generatefukingfunction(const char* funname, const char* args = "", const char* typ = "void") {
         std::cout << TextFormat("%s rfb::%s(%s);", typ, funname, args);
         std::cout << TextFormat("__attribute__((weak)) %s rfb::%s(%s) {}", typ, funname, args) << std::endl;
     }
     __attribute__((weak)) void rfb::update() {}
     __attribute__((weak)) void rfb::onkeypress(int key) {}
+    */
     
     bool bocache;
     void changecamera2dpos(float x, float y) {

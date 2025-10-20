@@ -1,4 +1,10 @@
 #!/bin/bash
+
+
+
+# This build script no longer works, use cmakebob instead.
+
+
 set -e
 # Compiler and linker flags
 CXX="g++"

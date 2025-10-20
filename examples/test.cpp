@@ -1,4 +1,4 @@
-#include "rfb.hpp"
+#include "../src/rfb.hpp"
 void keydown(int key) {
     std::cout << key << std::endl;
 }

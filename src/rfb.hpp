@@ -1,4 +1,7 @@
 #include <iostream>
+#include <functional>
+#include <vector>
+#include <string>
 struct Music;
 
 struct MyTexture {
@@ -18,8 +21,8 @@ namespace rfb
     void changecamera2dpos(float x, float y);
     void changecamera2dzoom(float zoom);
     void changecamera2drot(float rotation);
-    void update(); // can be overridden by user
-    void onkeypress(int key);
+    inline void update() {} // can be overridden by user
+    inline void onkeypress(int key) {}
     extern bool is3d;
     // the music (INTERNAL)
     extern Music music;
