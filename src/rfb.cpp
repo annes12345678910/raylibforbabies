@@ -11,6 +11,7 @@ namespace rfb
 
     bool drawgrids = true;  // single definition
     bool is3d = false;      // single definition
+    bool mouselocked = false;
     std::string window::title = "MROW!!!";
     rfb::colors::Color window::fillcolor = rfb::colors::WHITE;
     Texture2D cache;
@@ -212,6 +213,11 @@ namespace rfb
             {
                 UpdateMusicStream(music);
             }
+            if (mouselocked)
+            {
+                SetMousePosition(GetScreenWidth() / 2 , GetScreenHeight() / 2);
+            }
+            
             UpdateCamera(&cam3d, cammode);
             
             BeginDrawing();

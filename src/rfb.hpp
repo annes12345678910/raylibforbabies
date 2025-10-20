@@ -14,6 +14,7 @@ struct MyTexture {
 namespace rfb
 {
     extern bool drawgrids;
+    extern bool mouselocked;
     // changes the music that constantly plays
     void changemusic(std::string path, float volume = 1.0f);
     // initialize stuff, required
