@@ -16,4 +16,5 @@ int main() {
     //std::cout << rfb::is3d << std::endl;
     
     rfb::mainloop();
+    sound.unload();
 }

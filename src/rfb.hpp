@@ -17,6 +17,7 @@ namespace rfb
     struct sound {
         void* _sound; // opaque pointer
         void play();
+        void unload();
     };
 
     sound load_sound(std::string path);

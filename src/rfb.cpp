@@ -17,6 +17,12 @@ namespace rfb
     void sound::play() {
         PlaySound(*reinterpret_cast<Sound*>(_sound));
     }
+    void sound::unload() { // prevent leak
+        UnloadSound(*reinterpret_cast<Sound*>(_sound));
+        delete reinterpret_cast<Sound*>(_sound);
+        _sound = nullptr;
+    }
+
     bool drawgrids = true;  // single definition
     bool is3d = false;      // single definition
     bool mouselocked = false;
