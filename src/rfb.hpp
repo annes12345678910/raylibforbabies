@@ -20,21 +20,53 @@ namespace rfb
         void unload();
     };
 
+    // load a sound onto the gpu, don't forget to call `<sound>.unload();`.
+    // Example: `rfb::sound poop = rfb::load_sound("poop.mp3");` (the best example ever 💩🤫). Wait. Who makes poop jokes in the big 25? 
+    // RIP Annes, ™ºº£ - 2025
     sound load_sound(std::string path);
+    // draw grids for DEBÜGLER.
     extern bool drawgrids;
+    // if the mouse realizes its in an openGL window and then chains itself up, trying to unalive.
     extern bool mouselocked;
     // changes the music that constantly plays
     void changemusic(std::string path, float volume = 1.0f);
     // initialize stuff, required
     void init();
+
+    // cam2d F*CKS
+
+    // change x y of camera
     void changecamera2dpos(float x, float y);
+    // zoom the camera
     void changecamera2dzoom(float zoom);
+    // tilt the camera
     void changecamera2drot(float rotation);
-    inline void update() {} // can be overridden by user
+    extern int cammode; // orbital
+
+    // ooooo connections
+
+    // is called every frame, OVERRIDE IT NOW. IM THE ALPHA SIGMA FEMALE, AND I COMMAND YOU TO OVERRIDE IT. I gotta chilllll.
+    inline void update() {} 
+    // is called every key press (not holding)
     inline void onkeypress(int key) {}
+
+    // specify if your game is 3d or not
     extern bool is3d;
+
     // the music (INTERNAL)
     extern Music music;
+
+    namespace cammodes
+    {
+        int custom = 0;
+        int free = 1;
+        int orbital = 2;
+        int firstperson = 3;
+        int thirdperson = 4;
+    } // namespace cammodes
+    
+
+    // DEPRECATED POISON!!
     namespace connect
     {
         void _df() {
@@ -109,9 +141,13 @@ namespace rfb
     // 3d object base class
     struct D3Object : GameObject
     {
-        bool camaffect = false;
+        colors::Color wirecolor = colors::BLACK;
         float z = 0;
-        bool d3 = true;
+        bool wires = false;
+        bool solid = true;
+
+        D3Object(float x = 0, float y = 0, float z = 0, rfb::colors::Color color = rfb::colors::WHITE, colors::Color wirecolor = colors::BLACK, bool wires = false, bool solid = true)
+            : GameObject(x, y, color), z(z), wirecolor(wirecolor), solid(solid), wires(wires) {camaffect = false; d3 = true;}
     };
     
     // A Rectangle
@@ -182,11 +218,15 @@ namespace rfb
         bool checked = false;
         void draw() override;
     };
-    // need to fix this freaking thing, cant ask chatgpt because im on a plane.
+    // need to fix this freaking thing, cant ask chatgpt because im on a plane (NO LONGER).
     struct colorpicker : GameObject {
+
         // int GuiColorPicker(Rectangle bounds, const char *text, Color *color)
-        rect bounds;
-        std::string text = "Color Picker";
+
+        void* hsvvalue;
+        void* rgbvalue;
+        rect bounds = {0,0,200,200,colors::WHITE};
+        std::string textt = "Color Picker";
         bool hsv = false;
         void draw() override;
     };
@@ -197,7 +237,39 @@ namespace rfb
         float height = 1;
         float depth = 1;
         void draw() override;
+        cube(float x = 0, float y = 0, float z = 0,
+                float w = 1, float h = 1, float d = 1,
+                bool wires = false,
+                rfb::colors::Color color = rfb::colors::RED,
+                rfb::colors::Color wirecolor = rfb::colors::BLACK,
+                bool solid = true
+            ) : D3Object(x, y, z, color, wirecolor, wires, solid), width(w), height(h), depth(d) 
+                {
+                    this->wires = wires; 
+                    this->wirecolor = wirecolor;
+                };
     };
+    struct sphere : D3Object
+    {
+        float radius = 10;
+        float rings = 100;
+        float slices = 100;
+        // void DrawSphere(Vector3 centerPos, float radius, Color color)
+        void draw() override;
+        sphere(
+            float x = 0, 
+            float y = 0, 
+            float z = 0, 
+            rfb::colors::Color color = rfb::colors::RED,
+            bool wires = false,
+            rfb::colors::Color wirecolor = rfb::colors::BLACK,
+            bool solid = true,
+            float radius = 10,
+            float rings = 100,
+            float slices = 100
+        ) : D3Object(x,y,z, color, wirecolor, wires, solid), radius(radius), rings(rings), slices(slices) {}
+    };
+    
     
     
     

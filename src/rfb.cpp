@@ -22,9 +22,9 @@ namespace rfb
         delete reinterpret_cast<Sound*>(_sound);
         _sound = nullptr;
     }
-
-    bool drawgrids = true;  // single definition
-    bool is3d = false;      // single definition
+    int cammode = 2;
+    bool drawgrids = true;  
+    bool is3d = false;      
     bool mouselocked = false;
     std::string window::title = "MROW!!!";
     rfb::colors::Color window::fillcolor = rfb::colors::WHITE;
@@ -38,7 +38,6 @@ namespace rfb
         60.0f,                         // FOV in degrees
         CAMERA_PERSPECTIVE           // i like cheese
     };
-    int cammode = CAMERA_ORBITAL;
     /*
     void generatefukingfunction(const char* funname, const char* args = "", const char* typ = "void") {
         std::cout << TextFormat("%s rfb::%s(%s);", typ, funname, args);
@@ -57,10 +56,10 @@ namespace rfb
     }
     void changecamera2drot(float rotation) {
         cam.rotation = rotation;
-        
     }
     namespace connect
     {
+        // DEPRECATED AAAAAHHH
         std::function<void()> onupdate = _df;
         std::function<void(int)> onkeypress = _dfi;
     } // namespace connect
@@ -116,11 +115,11 @@ namespace rfb
     void colorpicker::draw() {
         if (hsv == true)
         {
-            
+            GuiColorPickerHSV(recttorec(bounds), textt.c_str(), reinterpret_cast<Vector3*>(hsvvalue));
         }
         else
         {
-
+            GuiColorPicker(recttorec(bounds), textt.c_str(), reinterpret_cast<Color*>(rgbvalue));
         }
     }
 
@@ -138,9 +137,27 @@ namespace rfb
         DrawLineEx(vector2tovec(p1), vector2tovec(p2), width, colortocolor(color));
     }
     void cube::draw() {
-        DrawCube((Vector3){x, y, z}, width, height, depth, colortocolor(color));
+        if (solid)
+        {
+            DrawCube((Vector3){x, y, z}, width, height, depth, colortocolor(color));
+        }
+        
+        if (wires)
+        {
+            DrawCubeWires((Vector3){x, y, z}, width, height, depth, colortocolor(wirecolor));
+        }
     }
-    
+    void sphere::draw() {
+        if (solid)
+        {
+            DrawSphereEx((Vector3){x,y,z}, radius, 100,100, colortocolor(color));
+        }
+        if (wires)
+        {
+            DrawSphereWires((Vector3){x,y,z}, radius, 100,100, colortocolor(wirecolor));
+        }
+        
+    }
 
 
 
@@ -170,6 +187,8 @@ namespace rfb
         // skobido bum bum
         for (const auto& obj : rfb::_objects)
         {
+            // DEBÜG
+            //std::cout << "camera affect: " << obj->camaffect << "\n" << "is 3d: " << obj->d3 << std::endl;
             if (obj->camaffect == iscam and obj->d3 == d3)
             {
                 obj->draw();
@@ -227,12 +246,13 @@ namespace rfb
             {
                 UpdateMusicStream(music);
             }
+            UpdateCamera(&cam3d, cammode);
             if (mouselocked)
             {
                 SetMousePosition(GetScreenWidth() / 2 , GetScreenHeight() / 2);
             }
             
-            UpdateCamera(&cam3d, cammode);
+            
             
             BeginDrawing();
             ClearBackground(rfb::colortocolor(rfb::window::fillcolor));
@@ -244,7 +264,7 @@ namespace rfb
                 {
                     DrawGrid(100,1);
                 }
-                DrawCube({0,0,0}, 1,1,1,RED);
+                //DrawCube({0,0,0}, 1,1,1,RED);
                 drawobjs(false, true);
                 //std::cout << "Cam pos: " << cam3d.position.x << ", "
                 //    << cam3d.position.y << ", "
